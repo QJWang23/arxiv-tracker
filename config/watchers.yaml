@@ -1,0 +1,62 @@
+arxiv_queries:
+  categories:
+    - "cs.CL"
+    - "cs.AI"
+    - "cs.LG"
+    - "cs.AR"
+    - "cs.DC"
+  keywords:
+    tier1_critical:
+      - "speculative decoding"
+      - "flash attention"
+      - "ring attention"
+      - "continuous batching"
+    tier2_high:
+      - "inference optimization"
+      - "long context"
+      - "multimodal"
+      - "mixture of experts"
+      - "quantization"
+      - "KV cache"
+    tier3_normal:
+      - "language model"
+      - "transformer"
+      - "attention mechanism"
+
+watchers:
+  authors:
+    - name: "Tri Dao"
+    - name: "Junxian He"
+    - org: "DeepSpeed Team"
+    - org: "Google DeepMind"
+    - org: "Anthropic"
+    - org: "vLLM Team"
+    - org: "Hugging Face"
+
+tag_keywords:
+  inference-opt:
+    - "quantization"
+    - "speculative decoding"
+    - "KV cache"
+    - "continuous batching"
+    - "inference optimization"
+  architecture:
+    - "mixture of experts"
+    - "MoE"
+    - "attention mechanism"
+  multimodal:
+    - "multimodal"
+    - "vision language"
+  long-context:
+    - "long context"
+    - "ring attention"
+    - "context length"
+  k8s-infra:
+    - "kubernetes"
+    - "container"
+    - "orchestration"
+  hw-accel:
+    - "NVIDIA"
+    - "GPU"
+    - "CXL"
+    - "acceleration"

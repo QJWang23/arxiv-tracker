@@ -1,0 +1,23 @@
+arxiv:
+  base_url: "http://export.arxiv.org/api/query"
+  page_size: 100
+  rate_limit: 3
+
+semantic_scholar:
+  base_url: "https://api.semanticscholar.org/graph/v1"
+  api_key: "${SEMANTIC_SCHOLAR_API_KEY}"
+
+github:
+  token: "${GITHUB_TOKEN}"
+  repos:
+    - "kubernetes/kubernetes"
+    - "kubernetes/enhancements"
+    - "cncf/toc"
+
+community:
+  hackernews:
+    base_url: "https://hacker-news.firebaseio.com/v0"
+  reddit:
+    subreddits:
+      - "MachineLearning"
+      - "LocalLLaMA"

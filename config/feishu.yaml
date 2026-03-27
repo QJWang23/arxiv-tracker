@@ -1,0 +1,8 @@
+webhook_url: "${FEISHU_WEBHOOK_URL}"
+message_templates:
+  instant:
+    title: "🚀 论文即时推送"
+    color: "blue"
+  weekly:
+    title: "📊 本周论文汇总"
+    color: "green"
