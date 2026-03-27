@@ -64,7 +64,8 @@ arxiv-tracker/
 ├── analyzers/       # Deep analysis via Claude CLI
 ├── notifiers/       # Push notifications
 ├── scripts/         # Automation scripts
-├── skills/          # Claude skill definitions
+├── .claude/skills/  # Claude Code skills
+│   └── paper-analyzer/
 ├── reports/         # Generated reports
 │   ├── daily/       # {date}-instant.md, {date}-deep-analysis.md
 │   └── weekly/      # {year}-W{week}.md
