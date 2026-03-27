@@ -22,6 +22,8 @@ from filters.keyword_filter import filter_by_keywords
 from filters.classifier import Classifier
 from filters.scorer import HeatScorer
 from models import PaperItem
+from notifiers.feishu import send_to_feishu, build_instant_card, build_weekly_card
+from analyzers import generate_deep_report
 
 BASE_DIR = Path(__file__).parent
 DATA_DIR = BASE_DIR / "data"
@@ -160,16 +162,43 @@ def main(mode: str, days_back: int = 1):
         hot_items = filter_hot_items(filtered)
         if hot_items:
             print(f"🔥 {len(hot_items)} items qualify for instant push")
-            generate_report(hot_items, "instant", date_str)
-            print("\n⚠️  Run Claude skill for deep analysis:")
-            print(f"   /paper-analyzer --mode=instant --date={date_str}")
+            report_path = generate_report(hot_items, "instant", date_str)
+
+            # Deep analysis for Tier1 papers via Claude API
+            print("\n🧠 Running deep analysis for Tier1 papers...")
+            deep_report_path = generate_deep_report(filtered, "instant", date_str)
+
+            # Send Feishu notification for each hot item
+            for item in hot_items:
+                card = build_instant_card(item, f"file://{report_path}")
+                if send_to_feishu(card):
+                    print(f"   ✅ Sent Feishu notification for: {item['title'][:50]}...")
+                else:
+                    print(f"   ❌ Failed to send Feishu notification")
         else:
             print("No items qualify for instant push today.")
     else:
-        generate_report(filtered, "weekly")
-        print("\n⚠️  Run Claude skill for deep analysis:")
-        week_num = datetime.now().isocalendar()[1]
-        print(f"   /paper-analyzer --mode=weekly --week={datetime.now().year}-W{week_num:02d}")
+        report_path = generate_report(filtered, "weekly")
+
+        # Deep analysis for Tier1 papers via Claude API
+        print("\n🧠 Running deep analysis for Tier1 papers...")
+        deep_report_path = generate_deep_report(filtered, "weekly", date_str)
+
+        # Build stats for weekly card
+        stats = {
+            "total": len(filtered),
+            "categories": {}
+        }
+        for item in filtered:
+            for tag in item.get("tags", []):
+                stats["categories"][tag] = stats["categories"].get(tag, 0) + 1
+
+        # Send Feishu notification for weekly summary
+        card = build_weekly_card(stats, f"file://{report_path}")
+        if send_to_feishu(card):
+            print("   ✅ Sent weekly Feishu notification")
+        else:
+            print("   ❌ Failed to send weekly Feishu notification")
 
     print("\n✅ Done!")
 
