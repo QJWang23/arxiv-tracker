@@ -24,6 +24,7 @@ from filters.scorer import HeatScorer
 from models import PaperItem
 from notifiers.feishu import send_to_feishu, build_instant_card, build_weekly_card
 from analyzers import generate_deep_report
+from utils import build_github_report_url, git_push_reports
 
 BASE_DIR = Path(__file__).parent
 DATA_DIR = BASE_DIR / "data"
@@ -121,12 +122,12 @@ def generate_report(items: List[Dict], mode: str, date_str: str = None) -> Path:
 
     for item in items:
         lines.append(f"## {item['title']}\n")
-        lines.append(f"- **Source**: {item['source']}")
-        lines.append(f"- **Heat Score**: {item['heat_score']}")
-        lines.append(f"- **Priority**: {item['priority']}")
-        lines.append(f"- **Tags**: {', '.join(item['tags'])}")
-        lines.append(f"- **URL**: {item['url']}\n")
-        lines.append(f"**Summary**: {item['summary'][:500]}...\n")
+        lines.append(f"- **来源**: {item['source']}")
+        lines.append(f"- **热度**: {item['heat_score']}")
+        lines.append(f"- **优先级**: {item['priority']}")
+        lines.append(f"- **标签**: {', '.join(item['tags'])}")
+        lines.append(f"- **链接**: {item['url']}\n")
+        lines.append(f"**摘要**: {item['summary'][:500]}...\n")
         lines.append("---\n")
 
     path.write_text("\n".join(lines), encoding="utf-8")
@@ -163,14 +164,20 @@ def main(mode: str, days_back: int = 1):
         if hot_items:
             print(f"🔥 {len(hot_items)} items qualify for instant push")
             report_path = generate_report(hot_items, "instant", date_str)
+            report_url = build_github_report_url(report_path)
+
+            # Push report to GitHub
+            git_push_reports([report_path])
 
             # Deep analysis for Tier1 papers via Claude API
             print("\n🧠 Running deep analysis for Tier1 papers...")
             deep_report_path = generate_deep_report(filtered, "instant", date_str)
+            if deep_report_path:
+                git_push_reports([deep_report_path])
 
             # Send Feishu notification for each hot item
             for item in hot_items:
-                card = build_instant_card(item, f"file://{report_path}")
+                card = build_instant_card(item, report_url)
                 if send_to_feishu(card):
                     print(f"   ✅ Sent Feishu notification for: {item['title'][:50]}...")
                 else:
@@ -179,10 +186,16 @@ def main(mode: str, days_back: int = 1):
             print("No items qualify for instant push today.")
     else:
         report_path = generate_report(filtered, "weekly")
+        report_url = build_github_report_url(report_path)
+
+        # Push report to GitHub
+        git_push_reports([report_path])
 
         # Deep analysis for Tier1 papers via Claude API
         print("\n🧠 Running deep analysis for Tier1 papers...")
         deep_report_path = generate_deep_report(filtered, "weekly", date_str)
+        if deep_report_path:
+            git_push_reports([deep_report_path])
 
         # Build stats for weekly card
         stats = {
@@ -194,7 +207,7 @@ def main(mode: str, days_back: int = 1):
                 stats["categories"][tag] = stats["categories"].get(tag, 0) + 1
 
         # Send Feishu notification for weekly summary
-        card = build_weekly_card(stats, f"file://{report_path}")
+        card = build_weekly_card(stats, report_url)
         if send_to_feishu(card):
             print("   ✅ Sent weekly Feishu notification")
         else:

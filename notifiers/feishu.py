@@ -21,19 +21,9 @@ def build_instant_card(item: dict, report_url: str) -> dict:
                     "tag": "div",
                     "text": {
                         "tag": "lark_md",
-                        "content": f"**{title}**\n\n{summary}\n\n🔥 热度: {heat_score}"
+                        "content": f"**{title}**\n\n{summary}\n\n🔥 热度: {heat_score}",
+                        "url": report_url
                     }
-                },
-                {
-                    "tag": "action",
-                    "actions": [
-                        {
-                            "tag": "button",
-                            "text": {"tag": "plain_text", "content": "查看详情"},
-                            "url": report_url,
-                            "type": "primary"
-                        }
-                    ]
                 }
             ]
         }
@@ -59,19 +49,9 @@ def build_weekly_card(stats: dict, report_url: str) -> dict:
                     "tag": "div",
                     "text": {
                         "tag": "lark_md",
-                        "content": f"**本周共收录 {total} 篇论文**\n\n{cat_text}"
+                        "content": f"**本周共收录 {total} 篇论文**\n\n{cat_text}",
+                        "url": report_url
                     }
-                },
-                {
-                    "tag": "action",
-                    "actions": [
-                        {
-                            "tag": "button",
-                            "text": {"tag": "plain_text", "content": "查看完整报告"},
-                            "url": report_url,
-                            "type": "primary"
-                        }
-                    ]
                 }
             ]
         }

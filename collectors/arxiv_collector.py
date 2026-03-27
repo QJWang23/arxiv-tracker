@@ -23,11 +23,11 @@ def build_query(categories: List[str], keywords: List[str]) -> str:
 
 def parse_arxiv_entry(entry) -> PaperItem:
     """Parse arxiv entry into PaperItem."""
-    # Extract arXiv ID from URL
-    arxiv_id = entry.id.split("/abs/")[-1].split("v")[0]
+    # Extract arXiv ID from entry_id URL (arxiv 2.x uses entry_id instead of id)
+    arxiv_id = entry.entry_id.split("/abs/")[-1].split("v")[0]
 
-    # Parse date
-    date = datetime.fromisoformat(entry.published.replace("Z", "+00:00")).strftime("%Y-%m-%d")
+    # Parse date (arxiv 2.x returns datetime object directly)
+    date = entry.published.strftime("%Y-%m-%d")
 
     # Extract authors
     authors = [a.name for a in entry.authors]

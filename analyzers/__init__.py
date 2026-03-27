@@ -58,9 +58,16 @@ def run_deep_analysis(mode: str, date_str: str = None) -> Optional[Path]:
             print(f"   ✅ Deep analysis completed")
             if report_path.exists():
                 return report_path
+            print(f"   ⚠️ Report file not found at expected path: {report_path}")
             return None
         else:
-            print(f"   ❌ Claude CLI failed: {result.stderr}")
+            stderr = result.stderr.strip() if result.stderr else ""
+            stdout = result.stdout.strip() if result.stdout else ""
+            print(f"   ❌ Claude CLI failed (returncode={result.returncode})")
+            if stderr:
+                print(f"   stderr: {stderr[:500]}")
+            if stdout:
+                print(f"   stdout: {stdout[:500]}")
             return None
 
     except subprocess.TimeoutExpired:

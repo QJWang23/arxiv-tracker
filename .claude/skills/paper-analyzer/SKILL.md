@@ -30,30 +30,31 @@ Analyzes papers from the arxiv-tracker and generates detailed technical summarie
 ```markdown
 ## {{title}}
 
-**Source**: {{source}} | **Date**: {{date}} | **Heat Score**: {{heat_score}}
+**来源**: {{source}} | **日期**: {{date}} | **热度**: {{heat_score}}
 
-### Core Technical Points
-- [Specific technical point 1, preserving original terminology]
-- [Specific technical point 2, preserving original terminology]
+### 核心技术要点
+- [具体技术要点1，保留原始术语]
+- [具体技术要点2，保留原始术语]
 
-### Innovation
-[2-3 sentences explaining the essential difference from existing methods]
+### 创新点
+[2-3句话说明与现有方法的本质区别]
 
-### Impact on Focus Areas
-- **Inference Optimization**: [Specific impact]
-- **K8s Infrastructure**: [Specific impact] (if applicable)
-- **Hardware Acceleration**: [Specific impact] (if applicable)
+### 对关注领域的影响
+- **推理优化**: [具体影响]
+- **K8s 基础设施**: [具体影响]（如适用）
+- **硬件加速**: [具体影响]（如适用）
 
-### Follow-up Points
-- [ ] [Actionable technical point or experiment direction]
-- [ ] [Related papers to read further]
+### 后续跟进
+- [ ] [可执行的技术要点或实验方向]
+- [ ] [相关论文推荐阅读]
 
 ---
-arXiv: {{arxiv_id}} | [Link]({{url}})
+arXiv: {{arxiv_id}} | [链接]({{url}})
 ```
 
 ## Key Requirements
 
+- **使用中文输出** - 所有报告内容使用中文撰写
 - **DO NOT over-summarize** - preserve technical details and terminology
 - **Focus on what's new** - highlight the innovation, not background
 - **Connect to user's domain** - explicitly analyze impact on inference optimization, K8s, and hardware acceleration

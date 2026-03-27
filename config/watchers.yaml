@@ -7,21 +7,23 @@ arxiv_queries:
     - "cs.DC"
   keywords:
     tier1_critical:
+      - "inference optimization"
+      - "long context inference"
+      - "multimodal inference"
+      - "KV cache"
+      - "sparse attention"
+      - "hybrid attention"
+    tier2_high:
       - "speculative decoding"
       - "flash attention"
       - "ring attention"
       - "continuous batching"
-    tier2_high:
-      - "inference optimization"
-      - "long context"
-      - "multimodal"
-      - "mixture of experts"
-      - "quantization"
-      - "KV cache"
     tier3_normal:
       - "language model"
+      - "quantization"
+      - "mixture of experts"
       - "transformer"
-      - "attention mechanism"
+
 
 watchers:
   authors:
